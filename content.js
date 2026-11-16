@@ -11,7 +11,7 @@
         questionLabel:"Today's question",question:"What changes when a shape is resized?",diagram:g.cover(),
         recall:{label:"Think back",text:"What tells you that two shapes have the same shape?"},
         goals:["Match corresponding sides and angles.","Find and use the scale factor, k.","Justify triangle similarity using a test."],
-        phase:"Launch · 1 min",notes:"本课只讲 6.5.3（教材印刷页 273–278），不展开 6.5.1、6.5.2 的全等判定或 6.5.4 软件操作。精简为 17 页，约 30–35 分钟，按讨论情况调整。先问学生：缩放后哪些量改变、哪些不变？允许猜测，先不报公式。N 开关备注，Slides 跳页，方向键翻页。"
+        phase:"Launch · 1 min",notes:"本课只讲 6.5.3（教材印刷页 273–278），不展开 6.5.1、6.5.2 的全等判定或 6.5.4 软件操作。精简为 13 页，约 25–30 分钟，按讨论情况调整。先问学生：缩放后哪些量改变、哪些不变？允许猜测，先不报公式。N 开关备注，Slides 跳页，方向键翻页。"
       },
       {
         type:"geometry",title:"Which copy keeps the shape?",eyebrow:"Notice · discuss",
@@ -42,32 +42,9 @@
         phase:"Understand · 2 min",notes:"先找 B、D 的直角，再用边的颜色和长度配对。第 01 步呈现有数值的对应边表，不单独堆 A ↔ E 等字母。请学生先算三组 image/object 比值；第 02 步揭示 k = 1.5，同时图中出现 ×1.5 箭头和 △ABC ∼ △EDF。说明顶点对应仍为 A 对 E、B 对 D、C 对 F，因此相似式按 EDF 顺序写。大到小的 scale factor 则为 2/3，本页明确只求小到大。"
       },
       {
-        type:"scaleLab",title:"Resize it. Watch what stays.",eyebrow:"Explore · live scale model",
-        prompt:"Predict the new width and height, then try k = ½, 1 and 2.",
-        phase:"Explore · 3 min",notes:"先预测，再点击 k = ½、1、2，或拖滑块。每次问新宽、新高和角度。概括 0 < k < 1 为缩小，k > 1 为放大，k = 1 大小不变。本课只用正的长度比例，不引入负位似系数、面积 k² 或体积 k³。缩小也是乘一个数。"
-      },
-      {
-        type:"geometry",title:"Reverse the arrow, reverse the factor",eyebrow:"Understand · enlargement & reduction",
-        visual:g.squares("reverse"),caption:"The same pair of shapes gives two directed scale factors.",
-        prompt:"Small → large is × 2. What takes large → small?",
-        steps:[{label:"Small → large",body:"k = 8 ÷ 4 = 2. Enlargement."},{label:"Large → small",body:"k = 4 ÷ 8 = ½. Reduction."},{label:"The factors are reciprocals",body:"2 × ½ = 1. You return to the original size."}],
-        takeaway:"k is image ÷ object, even when the image is smaller.",
-        phase:"Understand · 2 min",notes:"学生用手指沿两个箭头走，先说方向再算。诊断：这对图的 scale factor 是否一定是 2？要看方向。用 8 × ½ = 4 验证，不仅说“反过来”。"
-      },
-      {
-        type:"check",title:"Which way is the scale factor?",eyebrow:"Checkpoint · choose, then explain",
-        question:"A 12 cm side in the object matches an 8 cm side in the image. What is k?",
-        options:["3/2 — divide 12 by 8","2/3 — divide 8 by 12","4 — subtract 8 from 12"],correct:1,
-        explanation:"k = image ÷ object = 8 ÷ 12 = 2/3. This is a reduction because 0 < k < 1. Check: 12 × 2/3 = 8.",
-        phase:"Check · 2 min",notes:"所有学生先写 A/B/C，再点选。A 暴露方向倒置，C 暴露用减法代替比例。若多数未选 B，回到方向箭头页重说起点终点。学生作答前不要揭示反馈。"
-      },
-      {
-        type:"geometry",title:"Use k to find a missing side",eyebrow:"Worked example · enlargement",
-        visual:g.trianglePair("missing"),caption:"The triangles are given to be similar. x is a side length.",
-        prompt:"From the small triangle to the large triangle, find k and then x.",
-        steps:[{label:"Find the scale factor",body:"k = 6 ÷ 3 = 2. Check: 10 ÷ 5 = 2."},{label:"Match the unknown side",body:"x corresponds to the side of length 4."},{label:"Multiply",body:"x = 4 × 2 = 8 units."}],
-        takeaway:"Match → find k → multiply → check the size of the answer.",
-        phase:"Apply · 2 min",notes:"已给相似，不用先证明。先问 x 对应哪条边。请一人讲 k，另一人完成 4 × 2。追问放大后 x 比 4 大，合理吗？用两对已知边检查方向一致。"
+        type:"scaleLab",title:"Enlarge, reduce & reverse",eyebrow:"Explore · live scale model",
+        prompt:"Predict the new side length. Try k = ½, 1 and 2, then read the reverse factor.",
+        phase:"Explore · 4 min",notes:"合并缩放与反向 scale factor，只用这一页演示。先预测，再点击 k = ½、1、2 或拖动滑块。图中的正向箭头表示 object → image，反向箭头表示 image → object。k = 2 时，4 变成 8，反向用 ½ 回到 4；k = ½ 时，4 变成 2，反向用 2。概括 0 < k < 1 缩小，k > 1 放大，k = 1 大小不变；反向系数为 1/k。提醒角度一直是 90°。本课只使用正的长度比例。"
       },
       {
         type:"geometry",title:"SSS: compare all three pairs",eyebrow:"Triangle similarity · 1 of 4",
@@ -83,7 +60,7 @@
         prompt:"Use the large triangle as the object and the small triangle as the image.",
         steps:[{label:"Compare the two side pairs",body:"1.5/12 = 2/16 = 1/8."},{label:"Check the included angle",body:"The angle between those sides is 90° in each triangle."},{label:"Conclude",body:"Similar by SAS. Large → small has k = 1/8."}],
         takeaway:"Two proportional side pairs + an equal included angle = SAS similarity.",
-        phase:"Triangle tests · 2 min",notes:"截图第二行。请学生指两条已知边交汇处，确认夹角。大到小 k = 1/8，小到大 k = 8，需说明方向。非夹角不能直接套 SAS，后面有诊断题。"
+        phase:"Triangle tests · 2 min",notes:"截图第二行。请学生指两条已知边交汇处，确认夹角。大到小 k = 1/8，小到大 k = 8，需说明方向。非夹角不能直接套 SAS，判断时先指出夹角。"
       },
       {
         type:"geometry",title:"AAA: equal angles fix the shape",eyebrow:"Triangle similarity · 3 of 4",
@@ -100,13 +77,6 @@
         steps:[{label:"Right angle",body:"Each triangle has a marked 90° angle."},{label:"Hypotenuse and a matching side",body:"Hypotenuses: 6/3 = 2. Matching legs: 4/2 = 2."},{label:"Conclude",body:"The triangles are similar by RHS."}],
         takeaway:"Both must be right-angled; hypotenuse and a matching leg must share a ratio.",
         phase:"Triangle tests · 2 min",notes:"截图第四行。先找斜边：在直角对面，不按画得斜不斜判断。斜边 3、6 和对应直角边 2、4 比例同为 2。未标底边不用算，不引入勾股。"
-      },
-      {
-        type:"check",title:"Is that enough evidence?",eyebrow:"Checkpoint · test the reasoning",
-        question:"Two side pairs have the same ratio. One angle pair is equal, but the angle is NOT between those sides. Is similarity guaranteed?",
-        options:["Yes — any two sides and any angle work","No — SAS needs the included angle","Yes — one equal angle pair always works"],correct:1,
-        explanation:"Similarity is not guaranteed. SAS requires the equal angle to lie between the two proportional sides. A non-included angle does not establish SAS; one equal angle pair alone is also insufficient.",
-        phase:"Triangle tests · 1 min",notes:"请学生说出 included angle。A 把 SSA 当作普遍判定，C 把一组等角当 AAA。答错则回 SAS 指出夹角。本题问“是否保证”，不是断言所有非夹角情况都不相似。"
       },
       {
         type:"reference",title:"Four ways to prove similarity",eyebrow:"Keep this · reference summary",

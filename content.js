@@ -11,7 +11,7 @@
         questionLabel:"Today's question",question:"What changes when a shape is resized?",diagram:g.cover(),
         recall:{label:"Think back",text:"What tells you that two shapes have the same shape?"},
         goals:["Match corresponding sides and angles.","Find and use the scale factor, k.","Justify triangle similarity using a test."],
-        phase:"Launch · 1 min",notes:"本课只讲 6.5.3（教材印刷页 273–278），不展开 6.5.1、6.5.2 的全等判定或 6.5.4 软件操作。精简为 13 页，约 25–30 分钟，按讨论情况调整。先问学生：缩放后哪些量改变、哪些不变？允许猜测，先不报公式。N 开关备注，Slides 跳页，方向键翻页。"
+        phase:"Launch · 1 min",notes:"本课只讲 6.5.3（教材印刷页 273–278），不展开 6.5.1、6.5.2 的全等判定或 6.5.4 软件操作。精简为 12 页，约 25–30 分钟，按讨论情况调整。先问学生：缩放后哪些量改变、哪些不变？允许猜测，先不报公式。N 开关备注，Slides 跳页，方向键翻页。"
       },
       {
         type:"geometry",title:"Which copy keeps the shape?",eyebrow:"Notice · discuss",
@@ -42,9 +42,9 @@
         phase:"Understand · 2 min",notes:"先找 B、D 的直角，再用边的颜色和长度配对。第 01 步呈现有数值的对应边表，不单独堆 A ↔ E 等字母。请学生先算三组 image/object 比值；第 02 步揭示 k = 1.5，同时图中出现 ×1.5 箭头和 △ABC ∼ △EDF。说明顶点对应仍为 A 对 E、B 对 D、C 对 F，因此相似式按 EDF 顺序写。大到小的 scale factor 则为 2/3，本页明确只求小到大。"
       },
       {
-        type:"scaleLab",title:"Enlarge, reduce & reverse",eyebrow:"Explore · live scale model",
-        prompt:"Predict the new side length. Try k = ½, 1 and 2, then read the reverse factor.",
-        phase:"Explore · 4 min",notes:"合并缩放与反向 scale factor，只用这一页演示。先预测，再点击 k = ½、1、2 或拖动滑块。图中的正向箭头表示 object → image，反向箭头表示 image → object。k = 2 时，4 变成 8，反向用 ½ 回到 4；k = ½ 时，4 变成 2，反向用 2。概括 0 < k < 1 缩小，k > 1 放大，k = 1 大小不变；反向系数为 1/k。提醒角度一直是 90°。本课只使用正的长度比例。"
+        type:"scaleLab",title:"Scale up or scale down",eyebrow:"Explore · live scale model",
+        prompt:"Choose scale up or scale down, then predict the new side length.",
+        phase:"Explore · 4 min",notes:"同一页提供两个独立功能。Scale up：原图每边 4，只能选择 k > 1，默认 k = 2，得到每边 8。Scale down：原图每边 8，只能选择 0 < k < 1，默认 k = 0.5，得到每边 4。先让学生预测，再拖各自滑块或点预设。切换功能保留各自的数值，Reset 只重置当前功能。两种模式都只显示 object → image 的一条箭头，保持公式方向清楚。共同规律：所有边用同一 scale factor，角度始终为 90°。"
       },
       {
         type:"geometry",title:"SSS: compare all three pairs",eyebrow:"Triangle similarity · 1 of 4",
@@ -97,20 +97,17 @@
         phase:"Apply · 2 min",notes:"对应教材例 16。第 01 步讲公共角 A。第 02 步时，∠ADC 和 ∠AEB 同时出现黄色扇形及相同双角弧，与右侧黄色等式对应；在此之前这对黄色标记隐藏，Reset 后重新隐藏。∠ACD 与 ∠ABE 保留相同的单角弧。学生先描大、小三角形；平行标记是已知，不能仅凭看起来平行就推相似。"
       },
       {
-        type:"geometry",title:"A line of sight makes two triangles",eyebrow:"Application · model first",
-        visual:g.sightline(),caption:"Tree and building are vertical; the ground is level. Diagram not drawn to scale.",
-        prompt:"Find the building height h using the marked vertical heights and horizontal distances.",
-        steps:[{label:"Start at eye level",body:"Small triangle height = 4.5 − 1.5 = 3 m."},{label:"Measure from the viewer",body:"Small base: 5 m. Large base: 30 m."},{label:"Justify similarity",body:"Both have a right angle and the same angle at the viewer: AA."}],
-        takeaway:"Measure both triangle heights from the same horizontal eye-level line.",
-        phase:"Application · 2 min",notes:"教材例 18。此页先建模，下一页再求楼高。树高 4.5 m、眼高 1.5 m 均用独立竖直尺寸线；5 m 和 30 m 用地面下方的水平尺寸线。两个三角形都从眼高水平线开始。4.5 m 是树总高，不是小三角形高度；应减 1.5。30 m 是楼距观测者距离，不是距树的 25 m。假设水平地面、竖直树楼、视线经过两个顶部。"
-      },
-      {
-        type:"geometry",title:"Scale, then restore the eye height",eyebrow:"Application · solve & interpret",
-        visual:g.sightline(),caption:"Small triangle: base 5 m, height 3 m. Large triangle: base 30 m.",
-        prompt:"How tall is the building, including the 1.5 m below eye level?",
-        steps:[{label:"Find the scale factor",body:"k = 30/5 = 6."},{label:"Scale the triangle height",body:"Height above eye level = 3 × 6 = 18 m."},{label:"Answer the original question",body:"h = 18 + 1.5 = 19.5 m."}],
-        takeaway:"The triangle height and the building height are different quantities.",
-        phase:"Application · 2 min",notes:"先独立算 30 秒，再揭示。27 m 表明直接放大树总高，18 m 表明未加回眼高。始终问每步算的是什么量，最后带 m 作答。与上一页连贯讲完。"
+        type:"geometry",title:"Find the building height",eyebrow:"Application · reveal one step at a time",
+        visual:g.sightline(),caption:"Level ground. Vertical tree and building. Distances start at the viewer.",
+        prompt:"Use similar triangles to find h.",focusSteps:true,
+        steps:[
+          {label:"Identify the similar triangles",body:"Both have a right angle and share the viewing angle.",emphasis:"AA similarity"},
+          {label:"Find the small triangle height",body:"Subtract the eye height from the tree height.",emphasis:"4.5 − 1.5 = 3 m"},
+          {label:"Find the scale factor",body:"Compare the horizontal distances, large ÷ small.",emphasis:"k = 30 ÷ 5 = 6"},
+          {label:"Scale the height above eye level",body:"Use the same scale factor for the two triangle heights.",emphasis:"3 × 6 = 18 m"},
+          {label:"Add the eye height",body:"Include the part of the building below eye level.",emphasis:"h = 18 + 1.5 = 19.5 m"}
+        ],
+        phase:"Application · 4 min",notes:"合并原第 12、13 页。每次 Reveal 仅显示当前步骤，同时左图只高亮该步骤的对应线条：01 两个直角三角形与公共视角；02 树高 4.5 m、眼高 1.5 m 及树在眼高以上的部分；03 水平距离 30 m 与 5 m；04 两个三角形在眼高以上的竖直高度；05 楼总高与应加回的眼高。先让学生预测每步结果再揭示。Previous step 可返回，Reset 隐藏所有解答与高亮。强调 18 m 是眼高以上的高度，楼总高为 19.5 m。"
       }
     ]
   };

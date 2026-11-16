@@ -43,6 +43,9 @@ svg [data-diagram-step][hidden] { display: none !important; }
 svg .similarity-result { font-size: 30px; font-weight: 850; }
 svg .equal-angle-fill { fill: var(--sale); stroke: none; }
 svg .equal-angle-arc { fill: none; stroke: var(--ink); stroke-width: 2; }
+svg [data-highlight-steps][hidden] { display: none !important; }
+svg .step-highlight-halo { fill: none; stroke: var(--sale); stroke-width: 12; opacity: .9; }
+svg .step-highlight-line { fill: none; stroke: var(--ink); stroke-width: 2.5; }
 .evidence-panel { min-width: 0; padding-block: .5rem; }
 .diagram-prompt { margin: 0 0 1.1rem; font: 850 clamp(1.5rem,1.9vw,2rem)/1.22 var(--font-display); }
 .evidence-list { display: grid; margin: 0; padding: 0; list-style: none; gap: .8rem; }
@@ -50,6 +53,9 @@ svg .equal-angle-arc { fill: none; stroke: var(--ink); stroke-width: 2; }
 .evidence-step > span { color: var(--tomato-dark); font-size: .78rem; font-weight: 900; padding-top: .12rem; }
 .evidence-step strong { font-size: 1.05rem; color: var(--ink-soft); }
 .evidence-step p { font-size: clamp(1.5rem,1.75vw,1.875rem); line-height: 1.27; margin: .28rem 0 0; font-weight: 750; }
+.focus-step-list { min-height: 13rem; align-content: center; }
+.focus-step-list .evidence-step { border-top: 2px solid var(--ink); padding-top: 1rem; }
+.focus-step-list .step-result { margin-top: .8rem; }
 .side-pairs { width: 100%; margin-top: .35rem; border-collapse: collapse; text-align: left; }
 .side-pairs th { padding-bottom: .25rem; color: var(--ink-soft); font-size: .85rem; font-weight: 750; }
 .side-pairs td { padding: .18rem 0; font-size: clamp(1.3rem,1.6vw,1.7rem); font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -65,8 +71,13 @@ svg .equal-angle-arc { fill: none; stroke: var(--ink); stroke-width: 2; }
 .scale-formula i { font: italic 2.5rem Georgia,serif; }
 .fraction { display: grid; text-align: center; gap: .25rem; }
 .fraction > span:first-child { border-bottom: 2px solid var(--ink); padding-bottom: .3rem; }
-.lab-layout { display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; gap: 1rem; }
+.lab-layout { display: grid; grid-template-rows: auto auto auto minmax(0,1fr) auto; gap: .7rem; }
 .lab-layout .slide-instruction { margin: 0; }
+.scale-modes { display: grid; grid-template-columns: 1fr 1fr; width: min(100%,26rem); border: 2px solid var(--ink); }
+.scale-modes button { min-height: 2.8rem; padding: .55rem 1rem; border: 0; background: var(--paper); font-size: clamp(1.1rem,1.4vw,1.3rem); font-weight: 850; cursor: pointer; }
+.scale-modes button:first-child { border-right: 2px solid var(--ink); }
+.scale-modes button:hover { background: var(--paper-deep); }
+.scale-modes button[aria-selected="true"] { background: var(--ink); color: var(--sale); }
 .lab-stage { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(17rem,.6fr); gap: 2.6rem; align-items: center; }
 .scale-visual svg { display: block; width: 100%; max-height: 46vh; }
 .lab-controls { display: grid; gap: .65rem; padding-left: 1.7rem; border-left: 2px solid var(--ink); }
@@ -75,14 +86,15 @@ svg .equal-angle-arc { fill: none; stroke: var(--ink); stroke-width: 2; }
 .lab-controls label { font-size: .92rem; }
 .lab-controls input { width: 100%; min-height: 2.75rem; margin: 0; accent-color: var(--tomato); cursor: pointer; }
 .lab-controls input:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
-.preset-row { display: flex; gap: .5rem; }
-.preset-row button { flex: 1; min-height: 2.75rem; border: 1px solid var(--ink); background: transparent; font-weight: 850; cursor: pointer; }
+.preset-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)) 2.8rem; gap: .4rem; }
+.preset-row button { min-width: 0; min-height: 2.75rem; padding-inline: .2rem; border: 1px solid var(--ink); background: transparent; font-size: .9rem; font-weight: 850; cursor: pointer; }
+.preset-row .scale-reset { font-size: 1.5rem; font-weight: 500; }
 .preset-row button:hover, .preset-row button[aria-pressed="true"] { background: var(--sale); }
 .scale-state { margin: .2rem 0; font-size: 1.05rem; font-weight: 850; }
 .lab-measures { margin: 0; display: grid; gap: .4rem; }
 .lab-measures > div { display: flex; justify-content: space-between; gap: 1rem; padding-top: .4rem; border-top: 1px solid var(--line); }
 .lab-measures dt { color: var(--ink-soft); font-size: .85rem; }
-.lab-measures dd { margin: 0; font-size: 1rem; font-weight: 850; }
+.lab-measures dd { margin: 0; font-size: clamp(1.3rem,1.6vw,1.6rem); font-weight: 850; }
 .lab-controls .text-button { justify-self: start; padding-left: 0; font-size: .82rem; }
 .reference-layout { display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; gap: 1rem; }
 .reference-layout .slide-instruction { margin: 0; }
@@ -174,8 +186,17 @@ svg .equal-angle-arc { fill: none; stroke: var(--ink); stroke-width: 2; }
   .math-figure svg { max-height: 120mm; }
   .geometry-stage { grid-template-columns: 1.18fr .82fr; }
   .lab-stage { grid-template-columns: 1.4fr .6fr; }
+  .scene-scaleLab .lab-layout { grid-template-rows: auto auto minmax(0,1fr) minmax(0,1fr) auto; gap: .5rem; }
+  .scale-modes { display: none !important; }
+  .scene-scaleLab [data-scale-panel] { display: grid !important; min-height: 0; }
+  .scene-scaleLab .scale-visual svg { max-height: 64mm; }
+  .scene-scaleLab .lab-controls { gap: .25rem; }
+  .scene-scaleLab .lab-controls output { font-size: 2rem; }
+  .scene-scaleLab .lab-controls label { display: none; }
   .scene h2 { font-size: 3rem; }
   .evidence-step[hidden] { display: grid !important; }
+  .focus-step-list { min-height: 0; }
+  svg [data-highlight-steps][hidden] { display: none !important; }
   svg [data-diagram-step][hidden] { display: inline !important; }
   .evidence-actions, .reveal-count, .step-actions, .check-actions, input, .preset-row { display: none !important; }
   .takeaway { print-color-adjust: exact; -webkit-print-color-adjust: exact; }

@@ -84,6 +84,13 @@
     body += line(792,360,846,360,"extension-line")+line(792,384,846,384,"extension-line")+dimV(840,360,384)+t(858,382,"1.5 m","measurement-label","start");
     body += line(680,393,680,450,"extension-line")+line(780,393,780,520,"extension-line")+dimH(680,780,440)+t(730,427,"5 m","measurement-label");
     body += line(180,393,180,520,"extension-line")+dimH(180,780,510)+t(480,497,"30 m","measurement-label");
+    const trace=d=>`<path d="${d}" class="step-highlight-halo"/><path d="${d}" class="step-highlight-line"/>`;
+    const highlight=(step,label,paths)=>`<g data-highlight-steps="${step}" hidden aria-hidden="true" aria-label="${esc(label)}">${paths}</g>`;
+    body += highlight(1,"The two right triangles share the viewing angle.",trace("M 180 72 V 360 H 780 Z M 680 312 V 360 H 780 Z")+right(180,360)+right(680,360)+`<path d="M 730 360 A 50 50 0 0 1 734.92 338.36" class="angle-mark"/>`);
+    body += highlight(2,"Subtract eye height 1.5 m from tree height 4.5 m to get the small triangle height 3 m.",trace("M 605 312 V 384 M 840 360 V 384 M 680 312 V 360")+dimV(605,312,384)+dimV(840,360,384)+dimV(680,312,360));
+    body += highlight(3,"Compare the horizontal distances 30 m and 5 m.",trace("M 680 440 H 780 M 180 510 H 780")+dimH(680,780,440)+dimH(180,780,510));
+    body += highlight(4,"Scale the small height above eye level to find the building height above eye level.",trace("M 180 72 V 360 M 680 312 V 360")+dimV(180,72,360)+dimV(680,312,360));
+    body += highlight(5,"Add the eye height to find the full building height.",trace("M 68 72 V 384 M 840 360 V 384 M 180 360 V 384")+dimV(68,72,384)+dimV(840,360,384));
     return svg("Vertical dimension lines mark tree height 4.5 m, eye height 1.5 m, and building height h. Horizontal dimension lines below the ground mark 5 m from viewer to tree and 30 m from viewer to building. The red line of sight meets both tops.",body,"0 0 960 550");
   }
 
@@ -94,11 +101,22 @@
   window.GEOMETRY = { trianglePair, squares, nested, sightline, cover };
   const heading = s => `<header class="scene-heading"><p class="eyebrow">${esc(s.eyebrow)}</p><h2>${esc(s.title)}</h2></header>`;
   const item = (s,i) => `<li class="evidence-step" data-evidence-step hidden><span>${String(i+1).padStart(2,"0")}</span><div><strong>${esc(s.label)}</strong>${s.body?`<p>${esc(s.body)}</p>`:""}${s.pairs?`<table class="side-pairs" aria-label="Corresponding sides and their lengths"><thead><tr><th scope="col">Object</th><th scope="col"><span class="sr-only">corresponds to</span></th><th scope="col">Image</th></tr></thead><tbody>${s.pairs.map(p=>`<tr class="pair-${esc(p.tone)}"><td>${esc(p.object)}</td><td aria-hidden="true">→</td><td>${esc(p.image)}</td></tr>`).join("")}</tbody></table>`:""}${s.emphasis?`<p class="step-result">${esc(s.emphasis)}</p>`:""}</div></li>`;
-  const work = s => `<div class="evidence-panel"><p class="diagram-prompt">${esc(s.prompt)}</p>${s.formula || ""}<ol class="evidence-list" aria-live="polite">${(s.steps||[]).map(item).join("")}</ol><div class="evidence-actions"><button class="primary-button" type="button" data-geometry="reveal" aria-expanded="false">${esc(s.revealLabel||"Reveal reasoning")}</button><button class="text-button" type="button" data-geometry="reset">Reset</button><span class="reveal-count">0 / ${(s.steps||[]).length}</span></div></div>`;
+  const work = s => `<div class="evidence-panel"${s.focusSteps?' data-reveal-style="focus"':''}><p class="diagram-prompt">${esc(s.prompt)}</p>${s.formula || ""}<ol class="evidence-list${s.focusSteps?' focus-step-list':''}" aria-live="polite">${(s.steps||[]).map(item).join("")}</ol><div class="evidence-actions"><button class="primary-button" type="button" data-geometry="reveal" aria-expanded="false">${esc(s.revealLabel||"Reveal reasoning")}</button>${s.focusSteps?'<button class="text-button" type="button" data-geometry="previous" disabled>Previous step</button>':''}<button class="text-button" type="button" data-geometry="reset">Reset</button><span class="reveal-count">0 / ${(s.steps||[]).length}</span></div></div>`;
   const diagram = s => `<div class="scene-inner geometry-layout">${heading(s)}<div class="geometry-stage"><figure class="math-figure">${s.visual}<figcaption>${esc(s.caption||"Match corresponding parts before calculating.")}</figcaption></figure>${work(s)}</div>${s.takeaway?`<p class="takeaway"><span>REMEMBER</span><strong>${esc(s.takeaway)}</strong></p>`:""}</div>`;
 
+  const scaleModes = {
+    up: { label: "Scale up", rule: "k > 1", objectSide: 4, min: 1.25, max: 3, initial: 2, presets: [1.5, 2, 3] },
+    down: { label: "Scale down", rule: "0 < k < 1", objectSide: 8, min: 0.25, max: 0.75, initial: 0.5, presets: [0.25, 0.5, 0.75] }
+  };
+
   function lab(s) {
-    return `<div class="scene-inner lab-layout">${heading(s)}<p class="slide-instruction">${esc(s.prompt)}</p><div class="lab-stage"><div class="scale-visual">${svg("Interactive scale model. An original 4 by 4 square and its square image.", `<rect x="90" y="240" width="100" height="100" class="object-shape"/>${t(140,205,"OBJECT","shape-tag")}${t(140,380,"4")}${t(58,302,"4")}<rect x="590" y="240" width="100" height="100" class="image-shape" data-lab-rect/>${t(640,28,"IMAGE","shape-tag")}<text x="640" y="380" text-anchor="middle" data-lab-width>4</text><text x="563" y="302" text-anchor="middle" data-lab-height>4</text><g data-lab-forward>${arrow(240,250,405,"× 1")}</g><g data-lab-return><path d="M 405 325 H 240 l 12 -8 M 240 325 l 12 8" class="direction-line"/>${t(322.5,360,"× 1","arrow-label")}</g>`,"0 0 850 420")}</div><div class="lab-controls"><span class="eyebrow">Scale factor</span><output id="scaleOutput" for="scaleSlider">k = 1</output><label for="scaleSlider">Drag to resize every side</label><input id="scaleSlider" type="range" min="0.25" max="3" step="0.25" value="1" aria-valuetext="Scale factor 1, same size"><div class="preset-row"><button type="button" data-scale="0.5">k = ½</button><button type="button" data-scale="1">k = 1</button><button type="button" data-scale="2">k = 2</button></div><p class="scale-state" data-lab-state>Same size · congruent</p><dl class="lab-measures"><div><dt>Each side</dt><dd data-lab-equation>4 × 1 = 4</dd></div><div><dt>Image → object</dt><dd data-lab-reverse>4 × 1 = 4</dd></div><div><dt>Angles</dt><dd>Always 90°</dd></div></dl><button class="text-button" type="button" data-scale="1">Reset to original size</button></div></div><p class="takeaway"><span>NOTICE</span><strong>Reverse direction: use 1/k.</strong></p></div>`;
+    const panels = Object.entries(scaleModes).map(([mode, config]) => {
+      const base = config.objectSide * 25;
+      const imageSize = base * config.initial;
+      const body = `<rect x="${180-base/2}" y="${340-base}" width="${base}" height="${base}" class="object-shape"/>${t(180,305-base,"OBJECT","shape-tag")}${t(180,380,config.objectSide)}${t(152-base/2,348-base/2,config.objectSide)}<rect x="${640-imageSize/2}" y="${340-imageSize}" width="${imageSize}" height="${imageSize}" class="image-shape" data-lab-rect/>${t(640,28,"IMAGE","shape-tag")}<text x="640" y="380" text-anchor="middle" data-lab-width>${config.objectSide*config.initial}</text><text x="${600-imageSize/2}" y="${348-imageSize/2}" text-anchor="middle" data-lab-height>${config.objectSide*config.initial}</text><g data-lab-forward>${arrow(300,260,445,`× ${config.initial}`)}</g>`;
+      return `<section class="lab-stage" id="scale-${mode}-panel" data-scale-panel="${mode}" role="tabpanel" aria-labelledby="scale-${mode}-tab"${mode==="down"?' hidden aria-hidden="true" inert':' aria-hidden="false"'}><div class="scale-visual">${svg(`${config.label} model: an object square and its image.`,body,"0 0 850 420")}</div><div class="lab-controls"><span class="eyebrow">${config.label} · ${esc(config.rule)}</span><output id="scale-${mode}-output" for="scale-${mode}-factor">k = ${config.initial}</output><label class="sr-only" for="scale-${mode}-factor">Change the scale factor</label><input id="scale-${mode}-factor" data-scale-slider type="range" min="${config.min}" max="${config.max}" step="0.25" value="${config.initial}" aria-label="${config.label} factor"><div class="preset-row">${config.presets.map(k=>`<button type="button" data-scale="${k}" aria-pressed="${k===config.initial}">k = ${k}</button>`).join("")}<button class="scale-reset" type="button" data-scale-reset aria-label="Reset ${config.label.toLowerCase()}" title="Reset ${config.label.toLowerCase()}">↺</button></div><dl class="lab-measures"><div><dt>Side length</dt><dd data-lab-equation>${config.objectSide} × ${config.initial} = ${config.objectSide*config.initial}</dd></div></dl></div></section>`;
+    }).join("");
+    return `<div class="scene-inner lab-layout">${heading(s)}<p class="slide-instruction">${esc(s.prompt)}</p><div class="scale-modes" role="tablist" aria-label="Choose a scaling function">${Object.entries(scaleModes).map(([mode,config])=>`<button id="scale-${mode}-tab" type="button" role="tab" data-scale-mode="${mode}" aria-controls="scale-${mode}-panel" aria-selected="${mode==="up"}" tabindex="${mode==="up"?0:-1}">${config.label}</button>`).join("")}</div>${panels}<p class="takeaway"><span>NOTICE</span><strong>Every side uses the same scale factor. Angles stay equal.</strong></p></div>`;
   }
 
   function reference(s) {
@@ -107,46 +125,71 @@
 
   window.LESSON_RENDERERS = { geometry: diagram, scaleLab: lab, reference };
 
-  function updateScale(value) {
-    const k=Number(value), stage=document.querySelector(".scene-scaleLab"), rect=stage.querySelector("[data-lab-rect]");
-    const w=100*k,h=100*k,x=640-w/2,y=340-h;
-    Object.entries({x,y,width:w,height:h}).forEach(([a,v])=>rect.setAttribute(a,v));
-    const fmt = n => Number(n.toFixed(3)).toString();
-    const width=stage.querySelector("[data-lab-width]"),height=stage.querySelector("[data-lab-height]");
-    width.setAttribute("x",640); width.setAttribute("y",380); width.textContent=fmt(4*k);
-    height.setAttribute("x",x-27);height.setAttribute("y",y+h/2+8);height.textContent=fmt(4*k);
-    stage.querySelector("#scaleSlider").value=k;
-    stage.querySelector("#scaleOutput").textContent=`k = ${fmt(k)}`;
-    const state=k<1?"Reduction · 0 < k < 1":k>1?"Enlargement · k > 1":"Same size · congruent";
-    stage.querySelector("[data-lab-state]").textContent=state;
-    stage.querySelector("#scaleSlider").setAttribute("aria-valuetext",`Scale factor ${fmt(k)}, ${state}`);
-    stage.querySelector("[data-lab-equation]").textContent=`4 × ${fmt(k)} = ${fmt(4*k)}`;
-    const numerator=4,denominator=Math.round(k*4);
-    const gcd=(a,b)=>b?gcd(b,a%b):a;
-    const divisor=gcd(numerator,denominator);
-    const reverse=denominator/divisor===1?String(numerator/divisor):`${numerator/divisor}/${denominator/divisor}`;
-    stage.querySelector("[data-lab-forward] text").textContent=`× ${fmt(k)}`;
-    stage.querySelector("[data-lab-return] text").textContent=`× ${reverse}`;
-    stage.querySelector("[data-lab-reverse]").textContent=`${fmt(4*k)} × ${reverse} = 4`;
-    stage.querySelectorAll("[data-scale]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.scale)===k)));
+  function updateScale(value, panel) {
+    const config = scaleModes[panel.dataset.scalePanel];
+    const proposed = Number(value);
+    const k = Math.max(config.min, Math.min(config.max, Number.isFinite(proposed) ? Math.round(proposed*4)/4 : config.initial));
+    const size = config.objectSide * 25 * k;
+    const rect = panel.querySelector("[data-lab-rect]");
+    Object.entries({x:640-size/2,y:340-size,width:size,height:size}).forEach(([a,v])=>rect.setAttribute(a,v));
+    const length = config.objectSide * k;
+    const width = panel.querySelector("[data-lab-width]"), height = panel.querySelector("[data-lab-height]");
+    width.textContent=String(length);
+    height.setAttribute("x",600-size/2);height.setAttribute("y",348-size/2);height.textContent=String(length);
+    panel.querySelector("input").value=k;
+    panel.querySelector("output").textContent=`k = ${k}`;
+    panel.querySelector("input").setAttribute("aria-valuetext",`${config.label}, scale factor ${k}, side length ${length}`);
+    panel.querySelector("[data-lab-equation]").textContent=`${config.objectSide} × ${k} = ${length}`;
+    panel.querySelector("[data-lab-forward] text").textContent=`× ${k}`;
+    panel.querySelector("svg").setAttribute("aria-label",`${config.label}: object side ${config.objectSide}, image side ${length}, scale factor ${k}. All angles stay 90 degrees.`);
+    panel.querySelectorAll("[data-scale]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.scale)===k)));
   }
 
-  document.addEventListener("input",e=>{if(e.target.id==="scaleSlider")updateScale(e.target.value);});
+  function setScaleMode(mode, focus = false) {
+    if (!scaleModes[mode]) return;
+    const scene = document.querySelector(".scene-scaleLab");
+    scene.dataset.scaleMode = mode;
+    scene.querySelectorAll("[data-scale-mode]").forEach(button=>{
+      const active=button.dataset.scaleMode===mode;
+      button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1;
+      if(active&&focus)button.focus();
+    });
+    scene.querySelectorAll("[data-scale-panel]").forEach(panel=>{
+      const active=panel.dataset.scalePanel===mode;
+      panel.hidden=!active;panel.inert=!active;panel.setAttribute("aria-hidden",String(!active));
+    });
+  }
+
+  document.addEventListener("input",e=>{
+    if(e.target.matches("[data-scale-slider]"))updateScale(e.target.value,e.target.closest("[data-scale-panel]"));
+  });
+
   document.addEventListener("click", e => {
     const scaleButton=e.target.closest("[data-scale]");
-    if(scaleButton)updateScale(scaleButton.dataset.scale);
+    if(scaleButton)updateScale(scaleButton.dataset.scale,scaleButton.closest("[data-scale-panel]"));
+    const modeButton=e.target.closest("[data-scale-mode]");
+    if(modeButton)setScaleMode(modeButton.dataset.scaleMode);
+    const resetButton=e.target.closest("[data-scale-reset]");
+    if(resetButton){const panel=resetButton.closest("[data-scale-panel]");updateScale(scaleModes[panel.dataset.scalePanel].initial,panel);}
     const button=e.target.closest("[data-geometry]");
     if(!button)return;
     const scene=button.closest(".scene"),steps=[...scene.querySelectorAll("[data-evidence-step]")],reveal=scene.querySelector('[data-geometry="reveal"]');
     let count=Number(scene.dataset.revealed||0);
-    count=button.dataset.geometry==="reset"?0:Math.min(count+1,steps.length);
+    count=button.dataset.geometry==="reset"?0:button.dataset.geometry==="previous"?Math.max(1,count-1):Math.min(count+1,steps.length);
     scene.dataset.revealed=String(count);
-    steps.forEach((step,i)=>step.hidden=i>=count);
+    const focused=Boolean(scene.querySelector('[data-reveal-style="focus"]'));
+    steps.forEach((step,i)=>step.hidden=focused?i!==count-1:i>=count);
     scene.querySelectorAll("[data-diagram-step]").forEach(element=>{
       const show=Number(element.dataset.diagramStep)<=count;
       element.toggleAttribute("hidden",!show);
       element.setAttribute("aria-hidden",String(!show));
     });
+    scene.querySelectorAll("[data-highlight-steps]").forEach(element=>{
+      const show=element.dataset.highlightSteps.split(" ").map(Number).includes(count);
+      element.toggleAttribute("hidden",!show);element.setAttribute("aria-hidden",String(!show));
+    });
+    const previous=scene.querySelector('[data-geometry="previous"]');
+    if(previous)previous.disabled=count<=1;
     reveal.disabled=count===steps.length;
     reveal.textContent=count===steps.length?"Reasoning complete":count===0?"Reveal reasoning":"Reveal next step";
     reveal.setAttribute("aria-expanded",String(count>0));
@@ -154,7 +197,15 @@
   });
 
   document.addEventListener("DOMContentLoaded", () => {
-    updateScale(1);
+    document.querySelectorAll("[data-scale-panel]").forEach(panel=>updateScale(scaleModes[panel.dataset.scalePanel].initial,panel));
+    setScaleMode("up");
+    document.querySelector(".scale-modes").addEventListener("keydown",e=>{
+      if(!["ArrowLeft","ArrowRight","Home","End"].includes(e.key))return;
+      e.preventDefault();e.stopPropagation();
+      const current=document.querySelector(".scene-scaleLab").dataset.scaleMode;
+      const next=e.key==="Home"?"up":e.key==="End"?"down":current==="up"?"down":"up";
+      setScaleMode(next,true);
+    });
     const panel=document.querySelector("#contentsPanel"),button=document.querySelector("#contentsButton"),list=document.querySelector("#slideList");
     window.LESSON.slides.forEach((s,i)=>{
       const a=document.createElement("a");a.href=`#slide-${i+1}`;a.innerHTML=`<span>${String(i+1).padStart(2,"0")}</span><strong>${esc(s.title)}</strong>`;list.append(a);

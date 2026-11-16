@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5efdd">
+  <meta name="description" content="An interactive Year 8 mathematics lesson on similar shapes, scale factor and triangle similarity. Section 6.5.3.">
+  <title>Similar shapes · 6.5.3</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="geometry.css">
+</head>
+<body>
+  <a class="skip-link" href="#lessonDeck">Skip to lesson</a>
+
+  <div class="app-shell">
+    <header class="deck-chrome" aria-label="Lesson controls">
+      <button class="brand" id="homeButton" type="button" aria-label="Go to the first slide">
+        <span class="brand-mark" id="brandMark" aria-hidden="true">L</span>
+        <span class="brand-copy">
+          <strong id="lessonTitle">Lesson</strong>
+          <small id="lessonMeta">Subject · Unit</small>
+        </span>
+      </button>
+      <div class="chrome-actions">
+        <button class="quiet-button" id="contentsButton" type="button" aria-expanded="false" aria-controls="contentsPanel"><span aria-hidden="true">☷</span> Slides</button>
+        <button class="quiet-button" id="notesButton" type="button" aria-expanded="false" aria-controls="notesPanel"><span aria-hidden="true">✎</span> Notes</button>
+        <button class="quiet-button" id="fullscreenButton" type="button" aria-pressed="false"><span aria-hidden="true">⛶</span> Present</button>
+      </div>
+      <div class="progress-track" id="lessonProgress" role="progressbar" aria-label="Lesson progress" aria-valuemin="1" aria-valuenow="1"><span></span></div>
+    </header>
+
+    <div class="workbench">
+      <main id="lessonDeck" class="lesson-deck" tabindex="-1"></main>
+
+      <aside class="contents-panel" id="contentsPanel" aria-label="Slide list" hidden>
+        <header><strong>Today's lesson</strong><button class="icon-button" id="closeContents" type="button" aria-label="Close slide list">×</button></header>
+        <nav id="slideList" aria-label="Go to a slide"></nav>
+        <p>← → Navigate · N Notes · Esc Close</p>
+      </aside>
+
+      <aside class="notes-panel" id="notesPanel" aria-label="Teacher notes" aria-hidden="true">
+        <header>
+          <div>
+            <span>TEACHER NOTES</span>
+            <strong id="notesPhase">Lesson phase</strong>
+          </div>
+          <button class="icon-button" id="closeNotes" type="button" aria-label="Close teacher notes">×</button>
+        </header>
+        <p id="notesText">No notes for this slide.</p>
+        <small>Press <kbd>N</kbd> to show or hide notes.</small>
+      </aside>
+    </div>
+
+    <footer class="deck-footer">
+      <button class="nav-button" id="prevButton" type="button"><span aria-hidden="true">←</span> Back</button>
+      <p><span id="currentSlide">1</span> / <span id="totalSlides">1</span> · <strong id="currentTitle">Lesson</strong></p>
+      <button class="nav-button" id="nextButton" type="button">Next <span aria-hidden="true">→</span></button>
+    </footer>
+  </div>
+
+  <p class="sr-only" id="slideAnnouncer" aria-live="polite"></p>
+  <script src="geometry.js"></script>
+  <script src="content.js"></script>
+  <script src="deck.js"></script>
+</body>
+</html>
